@@ -1,0 +1,10 @@
+REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
+sergey/ubuntu-tmp-file   latest    056e396ffb7a   22 seconds ago   63.1MB
+nginx                    latest    b692a91e4e15   3 days ago       142MB
+ubuntu                   18.04     8d5df41c547b   3 days ago       63.1MB
+hello-world              latest    feb5d9fea6a5   10 months ago    13.3kB
+
+Задание со *
+Docker container - это развернутое из образа и работающее приложение.
+Docker image - это шаблон для создания Docker-контейнеров. Представляет собой исполняемый пакет, содержащий все необходимое для запуска приложения: код, среду выполнения, библиотеки, переменные окружения и файлы конфигурации.
+В образе отсутствует информация о сетевой конфигурации.
