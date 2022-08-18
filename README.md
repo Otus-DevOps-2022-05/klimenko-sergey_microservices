@@ -50,3 +50,18 @@ klimenko-sergey microservices repository
    sudo docker run -d --network=reddit --network-alias=comment klsergey/comment:1.0
    sudo docker run -d --network=reddit -p 9292:9292 klsergey/ui:1.0
    ```
+### Docker-4
+ * Start Docker containers with various network drivers
+ * Start Docker containers mongo, post, comment, ui in some network area with network aliases
+ * Start Docker containers mongo, post, comment, ui in two different network areas: first area contain containers post, comment, ui; second - mongo, post, comment
+ * Install Docker-compose:
+   ```
+   pip install docker-compose
+   ```
+ * Write docker-compose.yml and file .env with environment variables
+ * Add environment variable "COMPOSE_PROJECT_NAME" for change project name
+ * Start the project:
+   ```
+   docker-compose up -d
+   docker-compose ps
+   ```
