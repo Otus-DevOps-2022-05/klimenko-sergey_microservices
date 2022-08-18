@@ -53,7 +53,9 @@ klimenko-sergey microservices repository
 ### Docker-4
  * Start Docker containers with various network drivers
  * Start Docker containers mongo, post, comment, ui in some network area with network aliases
- * Start Docker containers mongo, post, comment, ui in two different network areas: first area contain containers post, comment, ui; second - mongo, post, comment
+ * Start Docker containers mongo, post, comment, ui in two different network areas:
+    * First area contain containers post, comment, ui
+    * Second - mongo, post, comment
  * Install Docker-compose:
    ```
    pip install docker-compose
