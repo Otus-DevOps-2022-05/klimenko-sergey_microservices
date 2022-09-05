@@ -67,3 +67,41 @@ klimenko-sergey microservices repository
    docker-compose up -d
    docker-compose ps
    ```
+### Monitoring-1
+ * Create VM:
+   ```
+   yc compute instance create \
+    --name docker-host \
+    --cores=2 \
+    --memory=4GB \
+    --zone ru-central1-a \
+    --network-interface subnet-name=default-ru-central1-a,nat-ip-version=ipv4 \
+    --create-boot-disk image-folder-id=standard-images,image-family=ubuntu-1804-lts,size=15 \
+    --ssh-key ~/.ssh/id_rsa.pub
+   ```
+ * Initialization Docker environment:
+   ```
+   sudo docker-machine create \
+    --driver generic \
+    --generic-ip-address=<IP_VM> \
+    --generic-ssh-user yc-user \
+    --generic-ssh-key ~/.ssh/id_rsa \
+    docker-host
+   ```
+ * Run Prometheus - monitoring system:
+   ```
+   docker run --rm -p 9090:9090 -d --name prometheus prom/prometheus
+   ```
+ * Create Docker image with Prometheus with custom settings in prometheus.yml file
+ * Build Docker images with app in directory docker:
+   ```
+   for i in ui post-py comment; do cd src/$i; bash docker_build.sh; cd -; done
+   ```
+ * Push images in DockerHub:
+   ```
+   docker push klsergey/ui
+   docker push klsergey/comment
+   docker push klsergey/post
+   docker push klsergey/prometheus
+   ```
+ * Add prometheus, node-exporter in section services in docker-compose.yml file
