@@ -10,7 +10,7 @@ services:
             - post_db
             - comment_db
   ui:
-    build: ../ui
+    build: ../src/ui
     image: ${USERNAME}/ui:${VERSION}
     ports:
       - ${PORT_OF_SERVICE_INSIDE_CONTAINERS}:${PORT_OF_SERVICE_IN_HOSTS}/${NET_PROTOCOL}
@@ -19,7 +19,7 @@ services:
           aliases:
             - ui
   post:
-    build: ../post-py
+    build: ../src/post-py
     image: ${USERNAME}/post:${VERSION}
     networks:
         front_net:
@@ -29,7 +29,7 @@ services:
           aliases:
             - post_back
   comment:
-    build: ../comment
+    build: ../src/comment
     image: ${USERNAME}/comment:${VERSION}
     networks:
         front_net:
