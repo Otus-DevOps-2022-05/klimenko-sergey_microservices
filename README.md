@@ -105,3 +105,10 @@ klimenko-sergey microservices repository
    docker push klsergey/prometheus
    ```
  * Add prometheus, node-exporter in section services in docker-compose.yml file
+ * Add mongodb-exporter for monitoring DB
+ * Add blackbox exporter for monitoring services: comment, post, ui
+ * In directory docker run commands to start the project:
+   ```
+   docker-compose up -d
+   docker-compose ps
+   ```

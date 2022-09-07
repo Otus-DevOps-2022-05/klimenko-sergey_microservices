@@ -73,37 +73,10 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
 
-  mongodb-exporter:
-    image:  percona/mongodb_exporter:0.34.0
-    user: '65535'
-    networks:
-        back_net:
-          aliases:
-            - mongodb-exporter
-    volumes:
-      - post_db:/data/db:ro
-    command:
-      - '--mongodb.uri=mongodb://post_db:27017'
-
-  blackbox-exporter:
-    image:  prom/blackbox-exporter:v0.22.0
-    user: root
-    networks:
-        back_net:
-          aliases:
-            - blackbox-exporter_back
-        front_net:
-          aliases:
-            - blackbox-exporter_front
-    volumes:
-      - blackbox_data:/config
-    # command:
-      # - '--config.file=/config/blackbox.yml'
 
 volumes:
   post_db:
   prometheus_data:
-  blackbox_data:
 
 networks:
   back_net:
