@@ -112,3 +112,47 @@ klimenko-sergey microservices repository
    docker-compose up -d
    docker-compose ps
    ```
+### Logging-1
+ * Create new Docker images for app:
+```
+for i in ui post-py comment; do cd src/$i; bash docker_build.sh; cd -; done
+```
+ * Push new images in repository:
+```
+for i in ui post comment; do docker push $USER_NAME/$i:logging; done
+```
+ * Create VM in Yandex Cloud:
+```
+yc compute instance create \
+    --name logging \
+    --cores=2 \
+    --memory=4GB \
+    --zone ru-central1-a \
+    --network-interface subnet-name=default-ru-central1-a,nat-ip-version=ipv4 \
+    --create-boot-disk image-folder-id=standard-images,image-family=ubuntu-1804-lts,size=50 \
+    --ssh-key ~/.ssh/id_rsa.pub
+```
+ * Create docker-machine:
+```
+sudo docker-machine create \
+    --driver generic \
+    --generic-ip-address=<public_ip_VM> \
+    --generic-ssh-user yc-user \
+    --generic-ssh-key ~/.ssh/id_rsa \
+    docker-host
+```
+ * Connect to docker-machine:
+```
+eval $(docker-machine env logging)
+```
+ * Create compose-file named docker-compose-logging.yml
+ * Create Dockerfile and build Docker image with Fluentd in directory logging/fluentd:
+```
+docker build -t $USER_NAME/fluentd .
+```
+ * Redact docker-compose.yml in directory docker for redirect logs in Fluentd and add Zipkin
+ * Run logging system in directory docker:
+```
+docker-compose -f docker-compose-logging.yml -f docker-compose.yml down
+docker-compose -f docker-compose-logging.yml -f docker-compose.yml up -d
+```
