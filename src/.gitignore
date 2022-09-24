@@ -1,3 +1,5 @@
+*log
+
 # docker-compose.yml
 build_info.txt
 prometheus/

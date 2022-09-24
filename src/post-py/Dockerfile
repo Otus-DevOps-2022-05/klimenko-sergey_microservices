@@ -3,7 +3,7 @@ FROM python:3.6.0-alpine
 WORKDIR /app
 COPY . /app
 
-RUN apk --no-cache --update add build-base && \
+RUN apk --no-cache --update add build-base gcc musl-dev && \
     pip install --no-cache --no-cache-dir --upgrade pip setuptools && \
     pip install --no-cache-dir -r /app/requirements.txt && \
     apk del build-base && \
