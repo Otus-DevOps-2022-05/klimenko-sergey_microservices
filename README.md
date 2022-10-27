@@ -346,3 +346,48 @@ klimenko-sergey microservices repository
      ```
      kubectl apply -f ./kubernetes/reddit/ -n dev
      ```
+### Kubernetes-3
+ * Familiarity with networking in Kubernetes: ClusterIP, nodePort, LoadBalancer
+ * Install Ingress Controller:
+   ```
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.4.0/deploy/static/provider/baremetal/deploy.yaml
+   ```
+ * Create Ingress for web application run command:
+   ```
+   kubectl apply -f ui-ingress.yml -n dev
+   kubectl get ingress -A
+   ```
+ * Create certificate:
+   ```
+   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=<IngressIP>"
+   ```
+ * Add certificate to cluster:
+   ```
+   kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev
+   ```
+ * Configure TLS Termination in manifest ui-ingress.yml, then run command:
+   ```
+   kubectl apply -f ui-ingress.yml -n dev
+   ```
+ * Create Secret manifest ssl-ui.yaml
+ * Apply Network Policy for separation frontend and backend
+ * Create virtual HDD in Yandex Cloud:
+   ```
+   yc compute disk create \
+       --name k8s \
+       --size 4 \
+       --description "disk for k8s"
+   ```
+ * Create PersitentVolume:
+   ```
+   kubectl apply -f mongo-pv.yaml -n dev
+   ```
+ * Create PersitentVolumeClaim:
+   ```
+   kubectl apply -f mongo-pvc.yaml -n dev
+   ```
+ * Change manifest mongo-deployment.yml for attache PV and deploy DB:
+   ```
+   kubectl delete -f mongo-deployment.yml -n dev
+   kubectl apply -f mongo-deployment.yml -n dev
+   ```
