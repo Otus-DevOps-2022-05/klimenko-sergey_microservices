@@ -391,3 +391,33 @@ klimenko-sergey microservices repository
    kubectl delete -f mongo-deployment.yml -n dev
    kubectl apply -f mongo-deployment.yml -n dev
    ```
+### Kubernetes-4
+ * Install Helm:
+   ```
+   wget https://get.helm.sh/helm-v3.10.1-linux-amd64.tar.gz
+   tar xzvf helm-v3.10.1-linux-amd64.tar.gz
+   sudo mv linux-amd64/helm /usr/local/bin/helm
+   helm repo add stable https://charts.helm.sh/stable
+   helm repo update
+   ```
+ * Create templates for components of web application
+ * Install 3 pcs Ingress Controllers:
+   ```
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.41.2/deploy/static/provider/baremetal/deploy.yaml
+   kubectl create -f ingress-controller-2.yaml
+   kubectl create -f ingress-controller-3.yaml
+   ```
+ * Install various releases of ui:
+   ```
+   helm install --name test-ui-1 Chart/ui/
+   helm install --name test-ui-2 Chart/ui/
+   helm install --name test-ui-3 Chart/ui/
+   ```
+ * Install GitLab:
+   ```
+   helm repo add gitlab https://charts.gitlab.io
+   helm fetch gitlab/gitlab --untar
+   helm install gitlab . -f gitlab/values.yaml
+   ```
+ * Push components of web application in Gitlab
+ * Setting GitLab CI and deploy web application
