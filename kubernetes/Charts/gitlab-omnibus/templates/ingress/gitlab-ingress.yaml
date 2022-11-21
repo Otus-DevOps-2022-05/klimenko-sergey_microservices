@@ -1,0 +1,65 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - gitlab.{{ .Values.baseDomain }}
+    - registry.{{ .Values.baseDomain }}
+    - mattermost.{{ .Values.baseDomain }}
+    - prometheus.{{ .Values.baseDomain }}
+    secretName: gitlab-tls
+  rules:
+  - host: gitlab.{{ .Values.baseDomain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "fullname" . }}
+            port:
+              number: 8005
+  - host: registry.{{ .Values.baseDomain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "fullname" . }}
+            port:
+              number: 8105
+  - host: mattermost.{{ .Values.baseDomain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "fullname" . }}
+            port:
+              number: 8065
+  - host: prometheus.{{ .Values.baseDomain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "fullname" . }}
+            port:
+              number: 9090
+---
